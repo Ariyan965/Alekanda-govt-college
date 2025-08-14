@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আলেকান্দা সরকারি কলেজ, বরিশাল</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+        header { background: #007bff; color: white; padding: 15px; text-align: center; }
+        .notice { background: white; margin: 15px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #007bff; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>আলেকান্দা সরকারি কলেজ, বরিশাল</h1>
+    <p>কলেজের সর্বশেষ আপডেট</p>
+</header>
+
+<div class="notice">
+    <h2>আজকের নোটিশ</h2>
+    <ul id="notice-list"></ul>
+</div>
+
+<script type="module">
+import { db, collection, getDocs } from "./firebase.js";
+
+async function loadNotices() {
+    const noticeList = document.getElementById("notice-list");
+    const querySnapshot = await getDocs(collection(db, "notices"));
+    noticeList.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+        let li = document.createElement("li");
+        li.textContent = "📢 " + doc.data().text;
+        noticeList.appendChild(li);
+    });
+}
+loadNotices();
+</script>
+
+</body>
+</html>
