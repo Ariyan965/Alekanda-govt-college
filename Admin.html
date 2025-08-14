@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>এডমিন প্যানেল - আলেকান্দা সরকারি কলেজ</title>
+    <style>
+        body { font-family: Arial; margin: 0; padding: 20px; background: #f0f0f0; }
+        input, button { padding: 10px; margin: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>এডমিন প্যানেল</h1>
+<input type="text" id="notice-input" placeholder="নোটিশ লিখুন">
+<button id="add-btn">নোটিশ যোগ করুন</button>
+
+<ul id="notice-list"></ul>
+
+<script type="module">
+import { db, collection, getDocs, addDoc, deleteDoc, doc } from "./firebase.js";
+
+async function loadNotices() {
+    const noticeList = document.getElementById("notice-list");
+    const querySnapshot = await getDocs(collection(db, "notices"));
+    noticeList.innerHTML = "";
+    querySnapshot.forEach((document) => {
+        let li = document.createElement("li");
+        li.textContent = document.data().text;
+        let delBtn = document.createElement("button");
+        delBtn.textContent = "ডিলিট";
+        delBtn.onclick = async () => {
+            await deleteDoc(doc(db, "notices", document.id));
+            loadNotices();
+        };
+        li.appendChild(delBtn);
+        noticeList.appendChild(li);
+    });
+}
+
+document.getElementById("add-btn").onclick = async () => {
+    const text = document.getElementById("notice-input").value;
+    if (text) {
+        await addDoc(collection(db, "notices"), { text });
+        document.getElementById("notice-input").value = "";
+        loadNotices();
+    }
+};
+
+loadNotices();
+</script>
+
+</body>
+</html>
