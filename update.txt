@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আলেকান্দা সরকারি কলেজ, বরিশাল</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-image: url('background.jpg'); /* এখানে তোমার ব্যাকগ্রাউন্ড ছবি */
+            background-size: cover;
+            background-position: center;
+        }
+        header { 
+            background: rgba(0, 123, 255, 0.9); 
+            color: white; 
+            padding: 15px; 
+            text-align: center; 
+        }
+        header img {
+            max-height: 80px;
+            display: block;
+            margin: 0 auto 10px auto;
+        }
+        .notice { 
+            background: rgba(255,255,255,0.9); 
+            margin: 15px; 
+            padding: 15px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        }
+        .notice ul {
+            list-style: none;
+            padding: 0;
+        }
+        .notice li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        h2 { color: #007bff; }
+    </style>
+</head>
+<body>
+
+<header>
+    <!-- এখানে লোগো পরিবর্তন করো -->
+    <img src="logo.png" alt="College Logo">
+    <h1>আলেকান্দা সরকারি কলেজ, বরিশাল</h1>
+    <p>কলেজের সর্বশেষ আপডেট</p>
+</header>
+
+<div class="notice">
+    <h2>আজকের নোটিশ</h2>
+    <ul id="কলেজ কাল থেকো খোলা"></ul>
+</div>
+
+<script type="module">
+import { db, collection, getDocs } from "./firebase.js";
+
+async function loadNotices() {
+    const noticeList = document.getElementById("notice-list");
+    const querySnapshot = await getDocs(collection(db, "notices"));
+    noticeList.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+        let li = document.createElement("li");
+        li.textContent = "📢 " + doc.data().text;
+        noticeList.appendChild(li);
+    });
+}
+loadNotices();
+</script>
+
+</body>
+</html>
