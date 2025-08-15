@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>আলেকান্দা সরকারি কলেজ, বরিশাল</title>
+<style>
+    body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
+    header { background: #007bff; color: white; padding: 15px; text-align: center; }
+    .notice { background: white; margin: 15px; padding: 15px; border-radius: 8px; }
+</style>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>আলেকান্দা সরকারি কলেজ, বরিশাল</h1>
+    <p>সর্বশেষ নোটিশ</p>
+</header>
+
+<div id="notice-list"></div>
+
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDGQEy-SpgfwvMhfKckSBC6CQ0AJFu8JOs",
+      authDomain: "alekanda-govt-college-c5096.firebaseapp.com",
+      databaseURL: "https://alekanda-govt-college-c5096-default-rtdb.firebaseio.com/",
+      projectId: "alekanda-govt-college-c5096",
+      storageBucket: "alekanda-govt-college-c5096.firebasestorage.app",
+      messagingSenderId: "823002328134",
+      appId: "1:823002328134:web:1186219edca44439fbee47",
+      measurementId: "G-0YVHC2GH4S"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const noticeList = document.getElementById('notice-list');
+
+    db.ref('notices').on('value', (snapshot) => {
+        noticeList.innerHTML = '';
+        snapshot.forEach((childSnapshot) => {
+            const notice = childSnapshot.val();
+            noticeList.innerHTML += `
+                <div class="notice">
+                    <h2>${notice.title}</h2>
+                    <p>${notice.content}</p>
+                    <small>${notice.time}</small>
+                </div>
+            `;
+        });
+    });
+</script>
+
+</body>
+</html>
