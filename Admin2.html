@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    input, textarea, button { margin: 5px 0; padding: 10px; width: 100%; }
+    button { background: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background: #0056b3; }
+</style>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<body>
+
+<h1>নোটিশ আপডেট প্যানেল</h1>
+<input type="text" id="title" placeholder="কলেজ ভর্তি">
+<textarea id="content" placeholder=" আগামী ১৮ তারিখ থেকে ২০ তারিখ পর্যন্ত সাইন্সের সকলের ভর্তি করা হবে"></textarea>
+<button onclick="addNotice()">নোটিশ যুক্ত করুন</ ভর্তি বিজ্ঞপ্তি>
+
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDGQEy-SpgfwvMhfKckSBC6CQ0AJFu8JOs",
+      authDomain: "alekanda-govt-college-c5096.firebaseapp.com",
+      databaseURL: "https://alekanda-govt-college-c5096-default-rtdb.firebaseio.com/",
+      projectId: "alekanda-govt-college-c5096",
+      storageBucket: "alekanda-govt-college-c5096.firebasestorage.app",
+      messagingSenderId: "823002328134",
+      appId: "1:823002328134:web:1186219edca44439fbee47",
+      measurementId: "G-0YVHC2GH4S"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function addNotice(){
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+
+        if(!title || !content){
+            alert("দয়া করে সব ঘর পূরণ করুন");
+            return;
+        }
+
+        const newRef = db.ref('notices').push();
+        newRef.set({
+            title: title,
+            content: content,
+            time: new Date().toLocaleString()
+        }).then(()=>{
+            alert("✅ নোটিশ যুক্ত হয়েছে!");
+            document.getElementById('title').value = '';
+            document.getElementById('content').value = '';
+        });
+    }
+</script>
+
+</body>
+</html>
